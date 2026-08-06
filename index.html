@@ -1,13 +1,51 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Galeria de Imagens</title>
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <script src="js/data.js"></script>
-  <script src="js/gallery.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Galeria de Imagens</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="gallery__image-background"></div>
+    <header class="gallery__header">
+      <i class="fa-solid fa-photo-film"></i>
+      <li class="gallery__list-categories">
+        <button class="gallery__category gallery__architecture" type="button">Arquitetura</button>
+        <button class="gallery__category gallery__nature" type="button">Natureza</button>
+        <button class="gallery__category gallery__summer" type="button">Verão</button>
+        <button class="gallery__category gallery__people" type="button">Pessoas</button>
+        <button class="gallery__category gallery__trip" type="button">Viagem</button>
+      </li>
+    </header>
+    <main>
+      <div class="gallery__search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input class="gallery__input-search" type="text" placeholder="Search"></input>
+      </div>
+      <h1>Galeria</h1>
+      <div class="gallery__searches">
+        <!-- Carousel com imagens -->
+        <div class="gallery__card">
+          <img src="assets/images/arquitetura-01.webp" alt="">
+          <div class="container__tags">
+            <p class="contaner__gallery-tag"></p>
+            <p class="contaner__gallery-tag"></p>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <p>&copy;Desenvolvido por Ricardo Zampolo Bertolucci Cruz - 2026</p>
+    </footer>
+    <script
+      src="https://kit.fontawesome.com/c563b4c310.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="js/data.js"></script>
+    <script src="js/gallery.js"></script>
+  </body>
 </html>
