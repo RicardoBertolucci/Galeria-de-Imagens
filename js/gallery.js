@@ -2,7 +2,7 @@ const listCategories = document.querySelector(".gallery__list-categories");
 const grid = document.querySelector(".gallery__grid");
 
 const categories = [];
-let state = 0;
+const active = new Set();
 
 // CREATE FUNCTIONS
 const createLi = () => {
@@ -83,29 +83,30 @@ const createStructureImage = (src, alt, tags) => {
   return card;
 };
 
-const loadImages = (btn) => {
-  imagens.forEach((obj) => {
-    const defaultImages = createStructureImage(obj.src, obj.titulo, obj.tags);
-    grid.append(defaultImages);
-  });
+const loadImages = (category) => {
 
-  if (btn) {
+  if (category === undefined || category.size === 0) {
+    grid.innerHTML = "";
+    imagens.forEach((category) => {
+      const defaultImages = createStructureImage(category.src, category.titulo, category.tags);
+      grid.append(defaultImages);
+    });
+  } else {
     // Limpa o grid
     grid.innerHTML = "";
-
-    // Descobre quais são os botões selecionados
-    const selectedImages = imagens.filter(
-      (obj) => obj.categoria === btn.textContent.trim(),
-    );
     
-    selectedImages.forEach((category) => {
+    const availableItems = imagens.filter((item) => { 
+      return active.has(item.categoria)
+    });
+
+    availableItems.forEach((item) => {
       const result = createStructureImage(
-        category.src,
-        category.titulo,
-        category.tags,
+        item.src,
+        item.titulo,
+        item.tags,
       );
       grid.append(result);
-    });
+    })
   }
 };
 
@@ -129,10 +130,16 @@ listCategories.addEventListener("click", (e) => {
     // Tenho nesse momento, que todas as imagens estão aparecendo
     if (btn.classList.contains("gallery__category--active")) {
       btn.classList.remove("gallery__category--active");
-      // Tenho que criar uma função que remove imagens
+      active.delete(btn.textContent.trim());
+      loadImages(active);
     } else {
       btn.classList.add("gallery__category--active");
-      let btnSelected = loadImages(btn);
+      active.add(btn.textContent.trim());
+      loadImages(active);
     }
   }
 });
+
+grid.addEventListener("click", () => {
+  console.log("oi")
+})
