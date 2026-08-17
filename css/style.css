@@ -161,6 +161,7 @@ main {
   display: flex;
   justify-content: space-between;
   margin: 0 auto;
+  cursor: pointer;
 }
 
 .gallery__image {

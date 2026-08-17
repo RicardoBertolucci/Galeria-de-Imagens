@@ -1,8 +1,14 @@
 const listCategories = document.querySelector(".gallery__list-categories");
 const grid = document.querySelector(".gallery__grid");
+const modal = document.querySelector(".modal");
+const imageModal = document.querySelector(".modal__box img");
+// const closeBtn = modal.closest(".modal__close");
 
+let indice;
 const categories = [];
 const active = new Set();
+
+let renderImages;
 
 // CREATE FUNCTIONS
 const createLi = () => {
@@ -21,17 +27,18 @@ const createButton = (text) => {
   return button;
 };
 
-const createDivCard = () => {
+const createDivCard = (index) => {
   const divCard = document.createElement("div");
   divCard.classList.add("gallery__card");
+  divCard.setAttribute("data-id", `${index}`);
   return divCard;
 };
 
-const createImgCard = (src, alt) => {
+const createImgCard = (src, titulo) => {
   const img = document.createElement("img");
   img.classList.add("gallery__image");
   img.setAttribute("src", `assets/${src}`);
-  img.setAttribute("alt", alt);
+  img.setAttribute("alt", titulo);
   img.setAttribute("loading", "lazy");
   return img;
 };
@@ -73,9 +80,9 @@ const createBtnCategory = (quantitybuttons) => {
   }
 };
 
-const createStructureImage = (src, alt, tags) => {
-  const card = createDivCard();
-  const img = createImgCard(src, alt);
+const createStructureImage = ({ src, titulo, tags, index }) => {
+  const card = createDivCard(index);
+  const img = createImgCard(src, titulo);
   const divTags = createDivTags(tags);
 
   card.append(img, divTags);
@@ -83,31 +90,22 @@ const createStructureImage = (src, alt, tags) => {
   return card;
 };
 
-const loadImages = (category) => {
-
-  if (category === undefined || category.size === 0) {
-    grid.innerHTML = "";
-    imagens.forEach((category) => {
-      const defaultImages = createStructureImage(category.src, category.titulo, category.tags);
-      grid.append(defaultImages);
-    });
+const loadStructureImages = () => {
+  // 1. Decide QUAL lista mostrar
+  if (active.size === 0) {
+    renderImages = imagens;
   } else {
-    // Limpa o grid
-    grid.innerHTML = "";
-    
-    const availableItems = imagens.filter((item) => { 
-      return active.has(item.categoria)
-    });
-
-    availableItems.forEach((item) => {
-      const result = createStructureImage(
-        item.src,
-        item.titulo,
-        item.tags,
-      );
-      grid.append(result);
-    })
+    renderImages = imagens.filter((item) => active.has(item.categoria));
   }
+
+  // 2. Limpa o grid
+  grid.innerHTML = "";
+
+  // 3. Renderiza a lista escolhida
+  renderImages.forEach((obj, i) => {
+    const card = createStructureImage({ ...obj, index: i });
+    grid.append(card);
+  });
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -118,28 +116,71 @@ document.addEventListener("DOMContentLoaded", () => {
   createBtnCategory(categories.length);
 
   // Carrego as imagens de todas as categorias
-  loadImages();
+  loadStructureImages();
 });
 
 listCategories.addEventListener("click", (e) => {
   const btn = e.target.closest(".gallery__category");
+  if (!btn) return;
 
-  if (!btn) {
-    return;
+  const categoria = btn.textContent.trim();
+  const ficouAtivo = btn.classList.toggle("gallery__category--active");
+
+  if (ficouAtivo) {
+    active.add(categoria);
   } else {
-    // Tenho nesse momento, que todas as imagens estão aparecendo
-    if (btn.classList.contains("gallery__category--active")) {
-      btn.classList.remove("gallery__category--active");
-      active.delete(btn.textContent.trim());
-      loadImages(active);
-    } else {
-      btn.classList.add("gallery__category--active");
-      active.add(btn.textContent.trim());
-      loadImages(active);
-    }
+    active.delete(categoria);
   }
+
+  loadStructureImages();
 });
 
-grid.addEventListener("click", () => {
-  console.log("oi")
+grid.addEventListener("click", (e) => {
+  const card = e.target.closest(".gallery__card");
+  if (!card) return;
+  
+  indice = Number(card.dataset.id);
+
+  const obj = renderImages[indice];
+  imageModal.src = `assets/${obj.src}`;  
+  imageModal.alt = `${obj.titulo}`;  
+
+  modal.classList.remove("is-hidden");
+});
+
+modal.addEventListener("click", (e) => {
+  const closeBtn = e.target.closest(".modal__close");
+  const previousBtn = e.target.closest(".modal__arrow-left");
+  const nextBtn = e.target.closest(".modal__arrow-right");
+  let obj;
+
+  if(closeBtn) modal.classList.add("is-hidden");
+
+  if(previousBtn) {
+    if(indice === 0) {
+      indice = renderImages.length - 1;
+      obj = renderImages[indice];
+      imageModal.src = `assets/${obj.src}`
+      imageModal.alt = `${obj.titulo}`
+    } else {
+      indice--;
+      obj = renderImages[indice];
+      imageModal.src = `assets/${obj.src}`
+      imageModal.alt = `${obj.titulo}`
+    }
+  } 
+
+  if(nextBtn) {
+    if(indice === renderImages.length - 1) {
+      indice = 0;
+      obj = renderImages[indice];
+      imageModal.src = `assets/${obj.src}`
+      imageModal.alt = `${obj.titulo}`
+    } else {
+      indice++;
+      obj = renderImages[indice];
+      imageModal.src = `assets/${obj.src}`
+      imageModal.alt = `${obj.titulo}`
+    }
+  } 
 })
