@@ -156,17 +156,17 @@ main {
 .gallery__card {
   width: 100%;
   max-width: 348px;
-  max-height: 462px;
+  aspect-ratio: 3 / 4;
   position: relative;
-  display: flex;
-  justify-content: space-between;
   margin: 0 auto;
   cursor: pointer;
 }
 
 .gallery__image {
-  max-width: 100%;
+  width: 100%;
   height: 100%;
+  object-fit: cover;
+  display: block;
   border-radius: 1rem;
 }
 
@@ -185,9 +185,22 @@ main {
   background-color: var(--color-black);
   padding: .4rem .6rem;
   border-radius: .5rem;
-  width: 84px;
+  min-width: 84px;
+  max-width: 45%;
   text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+.gallery__empty {
+  grid-column: 1 / -1;
+  align-self: center;
+  text-align: center;
+  color: var(--color-grey);
+  font-size: 1.125rem;
+  padding: 2rem 1rem;
+}
+
 /* ========== FOOTER ========== */
 .gallery__footer {
   height: 40px;
@@ -245,12 +258,17 @@ main {
 }
 
 .modal__box {
-  max-width: 40%;
+  width: min(60vw, 820px);
+  height: 82svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .modal__box img {
-  width: 100%;
-  max-height: 85svh;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
   border-radius: 1rem;
 }
@@ -311,6 +329,7 @@ main {
   }
 
   .modal__box {
-    max-width: 60%;
+    width: 78vw;
+    height: 62svh;
   }
 }

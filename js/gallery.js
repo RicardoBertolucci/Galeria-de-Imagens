@@ -150,7 +150,12 @@ const loadStructureImages = () => {
       grid.append(card);
     });
   } else {
-    grid.textContent = `Nenhuma busca encontrada para "${inputSearch.value}"`;
+    const empty = document.createElement("p");
+    empty.classList.add("gallery__empty");
+    empty.textContent = inputSearch.value
+      ? `Nenhuma imagem encontrada para "${inputSearch.value}".`
+      : "Nenhuma imagem encontrada para os filtros selecionados.";
+    grid.append(empty);
   }
 };
 
