@@ -229,9 +229,14 @@ main {
 
 .modal__close {
   position: absolute;
-  top: 3%;
-  right: 2%;
-  font-size: xx-large;
+  top: 1rem;
+  right: 1rem;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
   cursor: pointer;
   color: #fff;
 }
@@ -242,13 +247,17 @@ main {
 
 .modal__arrow-left,
 .modal__arrow-right {
-  padding: 1rem;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
   background-color: #fff;
   color: var(--color-primary);
   border: 1px solid var(--color-black);
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
   cursor: pointer;
 }
 
@@ -321,15 +330,32 @@ main {
     font-size: 0.55rem;
   }
 
+  /* no mobile as setas ficam sobre a imagem, nao ao lado:
+     lado a lado nao cabe na largura da tela */
+  .modal {
+    gap: 0;
+  }
+
   .modal__arrow-left,
   .modal__arrow-right {
-    height: 1rem;
-    width: 1rem;
-    padding: 0.5rem;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .modal__arrow-left {
+    left: 0.75rem;
+  }
+
+  .modal__arrow-right {
+    right: 0.75rem;
   }
 
   .modal__box {
-    width: 78vw;
-    height: 62svh;
+    width: 90vw;
+    height: 70svh;
   }
 }
